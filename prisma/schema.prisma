@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserProfile {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  email     String
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("user_profiles")
+}
+
+model Account {
+  id           String   @id @default(uuid())
+  userId       String
+  provider     String
+  accessToken  String?
+  refreshToken String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("accounts")
+}
+
+model Plan {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  startDate DateTime
+  endDate   DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  posts     Post[]
+
+  @@map("plans")
+}
+
+model Post {
+  id          String     @id @default(uuid())
+  userId      String
+  planId      String?
+  content     String
+  mediaUrl    String?
+  status      PostStatus @default(DRAFT)
+  scheduledAt DateTime?
+  publishedAt DateTime?
+  error       String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  plan        Plan?      @relation(fields: [planId], references: [id])
+
+  @@map("posts")
+}
+
+model Media {
+  id        String   @id @default(uuid())
+  userId    String
+  url       String
+  createdAt DateTime @default(now())
+
+  @@map("media")
+}
+
+enum PostStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+  ERROR
+}
