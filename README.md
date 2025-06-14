@@ -8,6 +8,7 @@ This project is an MVP SaaS service that helps you plan, create and schedule soc
 - **Supabase** for authentication and Postgres database
 - **Prisma ORM**
 - **Tailwind CSS** with shadcn/ui components
+- **OpenAI API** for text and image generation
 
 ## Getting Started
 
@@ -34,6 +35,7 @@ This project is ready to deploy on **Vercel**. Ensure the environment variables 
 - `NEXT_PUBLIC_SUPABASE_URL` – Supabase project URL
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY` – Supabase anon public key
 - `DATABASE_URL` – Postgres connection string
+- `OPENAI_API_KEY` – API key for OpenAI services
 
 ## Notes
 
