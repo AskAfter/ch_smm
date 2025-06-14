@@ -6,74 +6,117 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  schemas = ["public", "auth"]
+  schemas  = ["public", "auth"]
+}
+
+model AuthUser {
+  id String @id @db.Uuid
+
+  userProfile UserProfile?
+  accounts    Account[]
+  plans       Plan[]
+  posts       Post[]
+  media       Media[]
+
+  @@schema("auth")
+  @@map("users")
+}
+
+enum Platform {
+  FACEBOOK  @map("facebook")
+  INSTAGRAM @map("instagram")
+  TELEGRAM  @map("telegram")
+}
+
+enum PostStatus {
+  DRAFT     @map("draft")
+  SCHEDULED @map("scheduled")
+  PUBLISHED @map("published")
+  ERROR     @map("error")
 }
 
 model UserProfile {
-  id        String   @id @default(uuid())
-  userId    String   @unique
-  email     String
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        BigInt   @id @default(autoincrement())
+  userId    String   @unique @db.Uuid
+  name      String
+  avatarUrl String?  @map("avatar_url")
+  createdAt DateTime @default(now()) @map("created_at")
 
+  user AuthUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@schema("public")
   @@map("user_profiles")
 }
 
 model Account {
-  id           String   @id @default(uuid())
-  userId       String
-  provider     String
-  accessToken  String?
-  refreshToken String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id          BigInt    @id @default(autoincrement())
+  userId      String    @db.Uuid
+  platform    Platform
+  accessToken String    @map("access_token")
+  refreshToken String?  @map("refresh_token")
+  username    String?
+  profileUrl  String?   @map("profile_url")
+  createdAt   DateTime  @default(now()) @map("created_at")
 
+  user  AuthUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  posts Post[]
+
+  @@index([userId])
+  @@schema("public")
   @@map("accounts")
 }
 
 model Plan {
-  id        String   @id @default(uuid())
-  userId    String
-  title     String
-  startDate DateTime
-  endDate   DateTime?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  posts     Post[]
+  id        BigInt   @id @default(autoincrement())
+  userId    String   @db.Uuid
+  name      String
+  startDate DateTime @db.Date @map("start_date")
+  endDate   DateTime @db.Date @map("end_date")
+  createdAt DateTime @default(now()) @map("created_at")
 
+  user  AuthUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  posts Post[]
+
+  @@index([userId])
+  @@schema("public")
   @@map("plans")
 }
 
 model Post {
-  id          String     @id @default(uuid())
-  userId      String
-  planId      String?
+  id          BigInt     @id @default(autoincrement())
+  planId      BigInt?    @map("plan_id")
+  userId      String     @db.Uuid @map("user_id")
+  accountId   BigInt?    @map("account_id")
+  platform    Platform
+  scheduledAt DateTime   @map("scheduled_at")
+  publishedAt DateTime?  @map("published_at")
+  status      PostStatus
   content     String
-  mediaUrl    String?
-  status      PostStatus @default(DRAFT)
-  scheduledAt DateTime?
-  publishedAt DateTime?
-  error       String?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  plan        Plan?      @relation(fields: [planId], references: [id])
+  mediaUrl    String?    @map("media_url")
+  errorMessage String?   @map("error_message")
+  createdAt   DateTime   @default(now()) @map("created_at")
 
+  user    AuthUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan    Plan?    @relation(fields: [planId], references: [id], onDelete: Cascade)
+  account Account? @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([accountId])
+  @@index([planId])
+  @@schema("public")
   @@map("posts")
 }
 
 model Media {
-  id        String   @id @default(uuid())
-  userId    String
-  url       String
-  createdAt DateTime @default(now())
+  id        BigInt   @id @default(autoincrement())
+  userId    String   @db.Uuid @map("user_id")
+  fileUrl   String   @map("file_url")
+  fileType  String   @map("file_type")
+  createdAt DateTime @default(now()) @map("created_at")
 
+  user AuthUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@schema("public")
   @@map("media")
-}
-
-enum PostStatus {
-  DRAFT
-  SCHEDULED
-  PUBLISHED
-  ERROR
 }
