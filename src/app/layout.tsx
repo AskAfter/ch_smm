@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import ThemeToggle from '@/components/ThemeToggle'
+import Sidebar from '@/components/Sidebar'
+import Header from '@/components/Header'
 
 export const metadata: Metadata = {
   title: 'Social Media Manager',
@@ -10,11 +11,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="antialiased min-h-screen">
-        <header className="p-4 flex justify-end">
-          <ThemeToggle />
-        </header>
-        {children}
+      <body className="antialiased min-h-screen flex">
+        <Sidebar />
+        <div className="flex-1 flex flex-col">
+          <Header />
+          <main className="flex-1 p-4">{children}</main>
+        </div>
       </body>
     </html>
   )
