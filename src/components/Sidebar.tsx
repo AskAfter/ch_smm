@@ -13,15 +13,15 @@ export default function Sidebar() {
 
   return (
     <aside className="w-48 border-r p-4 min-h-screen">
-      <nav className="space-y-2">
+      <nav className="flex flex-col space-y-2">
         {links.map((link) => (
           <Link
             key={link.href}
             href={link.href}
             className={
-              pathname === link.href
+              (pathname === link.href
                 ? 'font-semibold'
-                : 'text-gray-600 hover:text-gray-900'
+                : 'text-gray-600 hover:text-gray-900') + ' block'
             }
           >
             {link.label}

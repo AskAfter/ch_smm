@@ -5,11 +5,25 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary: 220 98% 61%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 220 14% 96%;
+  --accent-foreground: 220 98% 40%;
+  --border: 220 13% 91%;
+  --input: 220 13% 91%;
+  --ring: 220 98% 61%;
 }
 
 html.dark {
   --background: #171717;
   --foreground: #ffffff;
+  --primary: 220 98% 61%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 220 14% 16%;
+  --accent-foreground: 220 14% 96%;
+  --border: 220 16% 20%;
+  --input: 220 16% 20%;
+  --ring: 220 98% 61%;
 }
 
 body {

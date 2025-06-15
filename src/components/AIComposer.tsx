@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { Button } from '@/components/ui/button'
 
 export default function AIComposer() {
   const [prompt, setPrompt] = useState('')
@@ -32,20 +33,12 @@ export default function AIComposer() {
         placeholder="Describe your post idea"
       />
       <div className="flex gap-2">
-        <button
-          onClick={() => handleGenerate('text')}
-          className="border px-3 py-1 rounded"
-          disabled={loading}
-        >
+        <Button onClick={() => handleGenerate('text')} disabled={loading}>
           AI Text
-        </button>
-        <button
-          onClick={() => handleGenerate('image')}
-          className="border px-3 py-1 rounded"
-          disabled={loading}
-        >
+        </Button>
+        <Button onClick={() => handleGenerate('image')} disabled={loading}>
           AI Image
-        </button>
+        </Button>
       </div>
       {output && <p className="p-2 border rounded">{output}</p>}
       {image && <img src={image} alt="AI result" className="max-w-full border rounded" />}
