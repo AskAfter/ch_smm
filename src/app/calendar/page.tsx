@@ -1,6 +1,7 @@
 'use client'
-import Calendar from 'react-calendar'
+import dynamic from 'next/dynamic'
 import 'react-calendar/dist/Calendar.css'
+const Calendar = dynamic(() => import('react-calendar'), { ssr: false })
 import { useState } from 'react'
 import useSWR from 'swr'
 import AIComposer from '@/components/AIComposer'

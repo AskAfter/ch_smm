@@ -13,7 +13,7 @@ This project is an MVP SaaS service that helps you plan, create and schedule soc
 ## Getting Started
 
 1. Copy `.env.example` to `.env` and fill in your Supabase credentials and database connection string.
-2. Install dependencies:
+2. Install dependencies (required for components like `react-calendar`):
    ```bash
    npm install
    ```
@@ -41,4 +41,4 @@ This project is ready to deploy on **Vercel**. Ensure the environment variables 
 
 - Social network posting is simulated via a mock function in `src/lib/publisher.ts`.
 - All tables reference the Supabase `auth.users` table by storing the `userId`.
-- The UI is minimal and uses Tailwind CSS utilities; you can extend it with more shadcn/ui components.
+- The UI uses Tailwind CSS utilities and includes shadcn/ui buttons for a better experience.

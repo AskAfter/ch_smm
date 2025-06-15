@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import ThemeToggle from './ThemeToggle'
+import { Button } from '@/components/ui/button'
 
 const agents = ['gpt-3.5-turbo', 'gpt-4']
 
@@ -40,9 +41,9 @@ export default function Header() {
         </select>
         <ThemeToggle />
       </div>
-      <button onClick={logout} className="border px-3 py-1 rounded">
+      <Button variant="outline" onClick={logout}>
         Logout
-      </button>
+      </Button>
     </header>
   )
 }
