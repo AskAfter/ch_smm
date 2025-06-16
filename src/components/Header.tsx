@@ -26,12 +26,12 @@ export default function Header() {
   }
 
   return (
-    <header className="p-4 border-b flex items-center justify-between">
+    <header className="sticky top-0 z-10 flex items-center justify-between border-b bg-background/80 p-4 backdrop-blur">
       <div className="flex items-center gap-2">
         <select
           value={agent}
           onChange={handleChange}
-          className="border rounded px-2 py-1"
+          className="border rounded-md bg-background px-2 py-1 text-sm"
         >
           {agents.map((a) => (
             <option key={a} value={a}>
